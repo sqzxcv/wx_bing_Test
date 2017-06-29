@@ -13,7 +13,7 @@ module.exports = {
       log_date_format: "YYYY-MM-DD HH:mm:ss SSS",
       out_file: "/var/log/wxapi/app.log",
       error_file: "/var/log/wxapi/err.log",
-      port: "3080",
+      port: "3081",
       env: {
         COMMON_VARIABLE: 'true'
       },
