@@ -23,8 +23,9 @@ module.exports = function (bot) {
          * 获取消息时间
          */
         console.log(`----------${msg.getDisplayTime()}-----${bot.contacts[msg.FromUserName].getDisplayName()}-----`)
+        // 正式环境这行代码不要注释
         // if (bot.contacts[msg.FromUserName].getDisplayName() != '小冰') {
-        //     global.waitMsgUser = msg.FromUserName;
+        //     return;
         // }
         /**
          * 判断消息类型
