@@ -2,6 +2,10 @@ require('babel-register')
 const Wechat = require('wechat4u')
 const handleMessage = require('./handleMessage')
 const nodemailer = require("nodemailer")
+const fs = require('fs')
+const qrcode = require('qrcode-terminal')
+const path = require('path');
+var loginInfoPath = path.resolve(__dirname, `sync-data.json`);
 
 module.exports = function () {
 
@@ -11,7 +15,7 @@ module.exports = function () {
      * 这里演示从本地文件中获取数据
      */
     try {
-        bot = new Wechat(require('./sync-data.json'))
+        bot = new Wechat(require(loginInfoPath))
     } catch (e) {
         bot = new Wechat()
     }
@@ -46,7 +50,7 @@ module.exports = function () {
     bot.on('login', () => {
         console.log('登录成功')
         // 保存数据，将数据序列化之后保存到任意位置
-        fs.writeFileSync('./sync-data.json', JSON.stringify(bot.botData))
+        fs.writeFileSync(loginInfoPath, JSON.stringify(bot.botData))
     })
     /**
      * 登出成功事件
@@ -54,7 +58,7 @@ module.exports = function () {
     bot.on('logout', () => {
         console.log('登出成功')
         // 清除数据
-        fs.unlinkSync('./sync-data.json')
+        fs.unlinkSync(loginInfoPath)
         //todo 事务处理完后才能退出
         process.exit();
     })
@@ -64,6 +68,11 @@ module.exports = function () {
     bot.on('contacts-updated', contacts => {
         //console.log(contacts)
         console.log('联系人数量：', Object.keys(bot.contacts).length)
+        for (var contact in bot.contacts) {
+            if (bot.contacts[contact]['NickName'] == '小冰') {
+                global.xiaobing = bot.contacts[contact]['UserName'];
+            }
+        }
     })
     /**
      * 错误事件，参数一般为Error对象
@@ -93,7 +102,7 @@ module.exports = function () {
         var mailOptions = {
             from: '124561376@qq.com ', // sender address
             to: '124561376@qq.com', // list of receivers
-            subject: '微信Robot登录地址', // Subject line
+            subject: 'wxapi登录地址', // Subject line
             //text: text, // plaintext body
             html: `微信扫描登录<br/><img src="${content}">`
         };
@@ -106,4 +115,6 @@ module.exports = function () {
             }
         });
     }
+
+    return bot;
 }
