@@ -24,9 +24,9 @@ module.exports = function (bot) {
          */
         console.log(`----------${msg.getDisplayTime()}-----${bot.contacts[msg.FromUserName].getDisplayName()}-----`)
         // 正式环境这行代码不要注释
-        // if (bot.contacts[msg.FromUserName].getDisplayName() != '小冰') {
-        //     return;
-        // }
+        if (bot.contacts[msg.FromUserName].getDisplayName() != '小冰') {
+            return;
+        }
         /**
          * 判断消息类型
          */
@@ -37,13 +37,13 @@ module.exports = function (bot) {
                  */
                 console.log(msg.Content);
                 if (bot.contacts[msg.FromUserName].getDisplayName() == '小冰') {
-                    
+
                     if (global.waitMsgUser.length != 0) {
                         bot.sendMsg(msg.Content, global.waitMsgUser);
                     } else {
-                        var cont = msg.Content.replace(/微软/g,'鱼跃');
-                        cont = cont.replace(/小冰/g,'小鱼儿');
-                        cont = cont.replace(/Microsoft/g,'Cloudoc');
+                        var cont = msg.Content.replace(/微软/g, '鱼跃');
+                        cont = cont.replace(/小冰/g, '小鱼儿');
+                        cont = cont.replace(/Microsoft/g, 'Cloudoc');
                         eventCenter.emit('restext', cont);
                     }
                 } else {
@@ -61,6 +61,18 @@ module.exports = function (bot) {
                 }).catch(err => {
                     bot.emit('error', err)
                 })
+                if (bot.contacts[msg.FromUserName].getDisplayName() == '小冰') {
+
+                    if (global.waitMsgUser.length != 0) {
+                        bot.sendMsg('[图片消息]', global.waitMsgUser);
+                    } else {
+
+                        eventCenter.emit('restext', '[图片消息]');
+                    }
+                } else {
+                    bot.sendMsg('[图片消息]', global.xiaobing);
+                    global.waitMsgUser = msg.FromUserName;
+                }
                 break
             case bot.CONF.MSGTYPE_VOICE:
                 /**
@@ -72,6 +84,18 @@ module.exports = function (bot) {
                 }).catch(err => {
                     bot.emit('error', err)
                 })
+                if (bot.contacts[msg.FromUserName].getDisplayName() == '小冰') {
+
+                    if (global.waitMsgUser.length != 0) {
+                        bot.sendMsg('[语音消息]', global.waitMsgUser);
+                    } else {
+
+                        eventCenter.emit('restext', '[语音消息]');
+                    }
+                } else {
+                    bot.sendMsg('[语音消息]', global.xiaobing);
+                    global.waitMsgUser = msg.FromUserName;
+                }
                 break
             case bot.CONF.MSGTYPE_EMOTICON:
                 /**
@@ -83,6 +107,18 @@ module.exports = function (bot) {
                 }).catch(err => {
                     bot.emit('error', err)
                 })
+                if (bot.contacts[msg.FromUserName].getDisplayName() == '小冰') {
+
+                    if (global.waitMsgUser.length != 0) {
+                        bot.sendMsg('[表情消息]', global.waitMsgUser);
+                    } else {
+
+                        eventCenter.emit('restext', '[表情消息]');
+                    }
+                } else {
+                    bot.sendMsg('[表情消息]', global.xiaobing);
+                    global.waitMsgUser = msg.FromUserName;
+                }
                 break
             case bot.CONF.MSGTYPE_VIDEO:
             case bot.CONF.MSGTYPE_MICROVIDEO:
@@ -95,6 +131,18 @@ module.exports = function (bot) {
                 }).catch(err => {
                     bot.emit('error', err)
                 })
+                if (bot.contacts[msg.FromUserName].getDisplayName() == '小冰') {
+
+                    if (global.waitMsgUser.length != 0) {
+                        bot.sendMsg('[视频消息]', global.waitMsgUser);
+                    } else {
+
+                        eventCenter.emit('restext', '[视频消息]');
+                    }
+                } else {
+                    bot.sendMsg('[视频消息]', global.xiaobing);
+                    global.waitMsgUser = msg.FromUserName;
+                }
                 break
             case bot.CONF.MSGTYPE_APP:
                 if (msg.AppMsgType == 6) {
@@ -108,6 +156,18 @@ module.exports = function (bot) {
                     }).catch(err => {
                         bot.emit('error', err)
                     })
+                }
+                if (bot.contacts[msg.FromUserName].getDisplayName() == '小冰') {
+
+                    if (global.waitMsgUser.length != 0) {
+                        bot.sendMsg('[文件消息]', global.waitMsgUser);
+                    } else {
+
+                        eventCenter.emit('restext', '[文件消息]');
+                    }
+                } else {
+                    bot.sendMsg('[文件消息]', global.xiaobing);
+                    global.waitMsgUser = msg.FromUserName;
                 }
                 break
             default:
